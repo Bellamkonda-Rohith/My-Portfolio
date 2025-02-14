@@ -1,0 +1,10 @@
+@import "tailwindcss";
+/* In your global CSS */
+html {
+  scroll-behavior: smooth;
+}
+.img1{
+object-fit: contain;
+object-position: center;
+width: 100%;
+}
