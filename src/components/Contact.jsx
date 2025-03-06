@@ -1,192 +1,184 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import { Email, Phone, LocationOn, LinkedIn, GitHub, Code } from '@mui/icons-material';
+import { Email, Phone, LocationOn, LinkedIn, GitHub } from '@mui/icons-material';
 
 const contactItems = [
   { 
     Icon: Email, 
-    bg: 'bg-blue-100', 
-    color: 'text-blue-600', 
+    color: '#FF6F61', 
     label: 'Email', 
     value: 'rohithbellamkonda0@gmail.com',
-    
+    link: 'mailto:rohithbellamkonda0@gmail.com' // Updated to match the actual email
   },
   { 
     Icon: Phone, 
-    bg: 'bg-purple-100', 
-    color: 'text-purple-600', 
+    color: '#FF6F61', 
     label: 'Phone', 
-    value: '+91 6305292852',
-     
+    value: '+91 6305292852', 
+    link: 'tel:+916305292852' // Updated to match the actual phone number
   },
   { 
     Icon: LocationOn, 
-    bg: 'bg-pink-100', 
-    color: 'text-pink-600', 
+    color: '#FF6F61', 
     label: 'Location', 
-    value: 'vijayawada, India' 
+    value: 'Vijayawada, Andhra Pradesh' // Fixed typo in "AndhraPradesh"
   }
 ];
 
 const socialLinks = [
   { 
     Icon: LinkedIn, 
-    color: 'text-blue-600', 
-    link: "https://www.linkedin.com/in/rohith-bellamkonda-133b87280/",
-    name: "LinkedIn" 
+    color: '#FF6F61', 
+    link: 'https://www.linkedin.com/in/rohith-bellamkonda-133b87280/', 
+    name: 'LinkedIn' 
   },
   { 
     Icon: GitHub, 
-    color: 'text-gray-600', 
-    link: "https://github.com/Bellamkonda-Rohith?tab=repositories",
-    name: "GitHub" 
+    color: '#FF6F61', 
+    link: 'https://github.com/Bellamkonda-Rohith', 
+    name: 'GitHub' 
   }
 ];
 
 const cardVariants = {
-  offscreen: { y: 50, opacity: 0 },
-  onscreen: (i) => ({
-    y: 0,
+  hidden: { opacity: 0, y: 30 },
+  visible: (i) => ({
     opacity: 1,
-    transition: {
-      type: "spring",
-      bounce: 0.4,
-      duration: 0.8,
-      delay: i * 0.1
-    }
+    y: 0,
+    transition: { type: 'spring', stiffness: 120, damping: 15, delay: i * 0.2 }
   })
+};
+
+const textVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 
 const floatVariants = {
   float: {
-    y: [0, -15, 0],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
+    y: [0, -10, 0],
+    transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
   }
 };
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative py-16 md:py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50 overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-32 h-32 bg-gradient-to-r from-blue-200 to-purple-200 rounded-full blur-xl"
-            initial={{
-              x: Math.random() * 120 - 10 + '%',
-              y: Math.random() * 120 - 10 + '%',
-              scale: 0
-            }}
-            animate={{
-              scale: [0, 1, 0],
-              opacity: [0, 0.1, 0]
-            }}
-            transition={{
-              duration: Math.random() * 8 + 5,
-              repeat: Infinity,
-              ease: 'easeInOut'
-            }}
-          />
-        ))}
-      </div>
+    <section 
+      id="contact" 
+      className="relative py-20 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#E6E6FA] text-[#1A1A2E] overflow-hidden"
+    >
+      {/* Subtle Background Elements */}
+      <motion.div
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+      >
+        <div className="w-full h-full bg-[radial-gradient(circle_at_center,#FF6F61_0%,transparent_70%)]" />
+      </motion.div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12 md:mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Let's Connect
-          </h2>
-          <motion.p
-            className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
+          <motion.h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#1A1A2E] mb-4"
+            variants={textVariants}
           >
-            Get in touch for collaborations or just a friendly hello 👋
+            Let’s Connect
+          </motion.h2>
+          <motion.p
+            className="text-lg sm:text-xl lg:text-2xl font-light text-[#4A4E69] max-w-2xl mx-auto"
+            variants={textVariants}
+          >
+            Reach out for collaborations, opportunities, or a friendly chat.
           </motion.p>
         </motion.div>
 
         {/* Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-6 md:gap-12">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Contact Cards */}
           <motion.div
-            initial="offscreen"
-            whileInView="onscreen"
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="space-y-6 md:space-y-8"
+            className="space-y-6"
           >
             {contactItems.map((item, index) => (
-              <motion.a
+              <motion.div
                 key={index}
                 variants={cardVariants}
                 custom={index}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -8, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                href={item.link}
-                target={item.link ? "_blank" : undefined}
-                rel="noopener noreferrer"
-                className="block p-6 md:p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all border border-white/50 hover:border-blue-100"
+                className="bg-white p-6 rounded-xl shadow-md border border-[#4A4E69]/20 flex items-center gap-4 group"
               >
-                <div className="flex items-center gap-4 md:gap-6">
-                  <motion.span
-                    className={`p-3 md:p-4 ${item.bg} rounded-xl`}
-                    whileHover={{ rotate: 15 }}
-                  >
-                    <item.Icon className={`${item.color} text-3xl`} />
-                  </motion.span>
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-semibold text-gray-900">{item.label}</h3>
-                    <p className="text-gray-600 text-base md:text-lg">{item.value}</p>
-                  </div>
+                <motion.span
+                  className="p-3 bg-[#FF6F61]/10 rounded-full"
+                  variants={floatVariants}
+                  animate="float"
+                >
+                  <item.Icon className="text-[#FF6F61] text-2xl sm:text-3xl" />
+                </motion.span>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-[#1A1A2E]">{item.label}</h3>
+                  {item.link ? (
+                    <a
+                      href={item.link}
+                      className="text-sm sm:text-base text-[#4A4E69] hover:text-[#FF6F61] transition-colors duration-300"
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    <p className="text-sm sm:text-base text-[#4A4E69]">{item.value}</p>
+                  )}
                 </div>
-              </motion.a>
+                <motion.div
+                  className="absolute inset-0 bg-[#FF6F61]/10 opacity-0 group-hover:opacity-100 rounded-xl"
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.div>
             ))}
           </motion.div>
 
           {/* Social Links */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring' }}
-            className="p-6 md:p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all border border-white/50 hover:border-blue-100"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="bg-white p-6 sm:p-8 rounded-xl shadow-md border border-[#4A4E69]/20 flex flex-col items-center"
           >
-            <div className="text-center">
-              <motion.div
-                className="p-4 bg-blue-100 w-fit mx-auto rounded-2xl mb-6"
-                variants={floatVariants}
-                animate="float"
-              >
-                <Code className="text-blue-600 text-3xl" />
-              </motion.div>
-              <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">Find Me Online</h3>
-              <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={index}
-                    whileHover={{ y: -5 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`p-4 md:p-5 bg-gray-100 rounded-xl hover:bg-gray-50 ${social.color} relative group`}
-                    href={social.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+            <motion.h3
+              className="text-xl sm:text-2xl font-semibold text-[#1A1A2E] mb-6"
+              variants={textVariants}
+            >
+              Find Me Online
+            </motion.h3>
+            <div className="flex flex-wrap justify-center gap-6">
+              {socialLinks.map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variants={cardVariants}
+                  custom={index}
+                  whileHover={{ y: -8, scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-4 bg-[#FF6F61]/10 rounded-full text-[#FF6F61] relative group"
+                >
+                  <social.Icon className="text-3xl sm:text-4xl" />
+                  <motion.span
+                    className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-[#1A1A2E] text-[#E6E6FA] text-xs sm:text-sm px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap"
                   >
-                    <social.Icon className="text-3xl" />
-                    <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
-                      {social.name}
-                    </span>
-                  </motion.a>
-                ))}
-              </div>
+                    {social.name}
+                  </motion.span>
+                </motion.a>
+              ))}
             </div>
           </motion.div>
         </div>

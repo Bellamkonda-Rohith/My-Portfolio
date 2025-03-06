@@ -2,97 +2,95 @@ import { motion } from "framer-motion";
 import React from 'react';
 
 const Hero = () => {
-  const floatingVariants = {
-    float: {
-      y: [-10, 10, -10],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.3 } }
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  };
+
+  const buttonVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+    tap: { scale: 0.98 }
   };
 
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center text-center px-4 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 text-white relative overflow-hidden">
-      {/* Animated background elements */}
+    <section 
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-[#1A1A2E] text-[#E6E6FA] relative overflow-hidden"
+      role="banner"
+      aria-label="Hero Section"
+    >
       <motion.div
-        className="absolute inset-0 opacity-20"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
       >
-        <div className="w-full h-full bg-gradient-to-r from-white/10 to-white/5 pattern-circuit-board" />
+        <div className="w-full h-full bg-[radial-gradient(circle_at_center,#FF6F61_0%,transparent_70%)]" />
       </motion.div>
 
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <motion.h1 
-          className="text-4xl md:text-6xl font-extrabold mb-4 md:mb-6 leading-tight drop-shadow-2xl px-2"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.8,
-            ease: [0.6, -0.05, 0.01, 0.99],
-            delay: 0.2
-          }}
+      <motion.div
+        className="relative z-10 w-full max-w-6xl mx-auto text-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.h1
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight tracking-tight"
+          variants={textVariants}
         >
-          Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">Bellamkonda Rohith</span>
+          Hey, I’m{' '}
+          <span className="relative inline-block">
+            <span className="text-[#FF6F61]">Bellamkonda Rohith</span>
+            <motion.span
+              className="absolute -bottom-2 left-0 w-full h-1 bg-[#FF6F61] rounded-full"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+            />
+          </span>
         </motion.h1>
-        
-        <motion.p 
-          className="text-lg md:text-xl max-w-3xl mb-8 md:mb-12 mx-auto drop-shadow-md px-4 leading-relaxed"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.8,
-            ease: [0.6, -0.05, 0.01, 0.99],
-            delay: 0.5
-          }}
+
+        <motion.p
+          className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto mb-10 font-light leading-relaxed opacity-90"
+          variants={textVariants}
         >
-          A passionate Frontend Developer focused on crafting exceptional digital experiences with modern web technologies.
+          A Frontend Developer passionate about crafting seamless, pixel-perfect digital experiences.
         </motion.p>
-        
+
         <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 100,
-            damping: 15,
-            delay: 0.8
-          }}
+          className="flex justify-center gap-6"
+          variants={textVariants}
         >
-          <motion.a 
-            href="#contact" 
-            className="inline-block px-8 py-3 md:px-10 md:py-4 bg-white text-blue-600 font-semibold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 text-sm md:text-base"
-            whileHover={{ 
-              scale: 1.05,
-              rotate: [0, 2, -2, 0],
-              transition: { duration: 0.4 }
-            }}
-            whileTap={{ scale: 0.95 }}
-            variants={floatingVariants}
-            animate="float"
+          <motion.a
+            href="#contact"
+            className="relative px-8 py-4 bg-[#FF6F61] text-[#1A1A2E] font-semibold rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-[#E6E6FA] focus:ring-offset-2 focus:ring-offset-[#1A1A2E]"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            aria-label="Contact Bellamkonda Rohith"
           >
-            📬 Contact Me
+            Get in Touch
+            <motion.span
+              className="absolute inset-0 bg-[#E6E6FA] opacity-0 hover:opacity-20 rounded-full"
+              transition={{ duration: 0.3 }}
+            />
+          </motion.a>
+
+          <motion.a
+            href="#projects"
+            className="px-8 py-4 border border-[#E6E6FA] text-[#E6E6FA] font-semibold rounded-full hover:bg-[#E6E6FA]/10 transition-colors duration-300"
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            aria-label="View Projects"
+          >
+            View Projects
           </motion.a>
         </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5 }}
-      >
-        <div className="animate-bounce w-8 h-14 rounded-full border-2 border-white/50 flex items-start justify-center p-1">
-          <motion.div
-            className="w-3 h-3 bg-white rounded-full"
-            animate={{ y: [0, 20, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-        </div>
       </motion.div>
     </section>
   );

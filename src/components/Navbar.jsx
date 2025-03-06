@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
-import React from 'react'
+import React from 'react';
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -14,99 +15,112 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      const offset = window.scrollY;
-      setScrolled(offset > 50);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleScroll = (id) => {
-    const element = document.querySelector(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setIsOpen(false);
-    }
+    // Ensure the menu closes immediately
+    setIsOpen(false);
+
+    // Use setTimeout to allow the menu to collapse before scrolling
+    setTimeout(() => {
+      const element = document.querySelector(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        console.warn(`Element with ID ${id} not found`);
+      }
+    }, 100); // Delay to ensure menu animation completes
+  };
+
+  const navVariants = {
+    hidden: { opacity: 0, y: -30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
   };
 
   const menuVariants = {
     open: { 
-      opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+      opacity: 1, 
+      height: 'auto', 
+      transition: { duration: 0.4, ease: "easeOut" } 
     },
     closed: { 
-      opacity: 0,
-      y: '-100%',
-      transition: { staggerChildren: 0.1, staggerDirection: -1 }
+      opacity: 0, 
+      height: 0, 
+      transition: { duration: 0.3, ease: "easeIn" } 
     }
   };
 
   const itemVariants = {
-    open: { opacity: 1, y: 0 },
-    closed: { opacity: 0, y: -20 }
+    open: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    closed: { opacity: 0, y: -15, transition: { duration: 0.2 } }
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'backdrop-blur-lg bg-white/90 shadow-sm' : 'backdrop-blur-sm bg-white/20'}`}>
+    <motion.nav
+      className={`fixed w-full top-0 z-50 transition-all duration-500 ${
+        scrolled 
+          ? 'bg-[#1A1A2E]/95 backdrop-blur-lg shadow-lg' 
+          : 'bg-[#1A1A2E]/80 backdrop-blur-md'
+      }`}
+      initial="hidden"
+      animate="visible"
+      variants={navVariants}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20">
-          {/* Logo */}
+        <div className="flex justify-between items-center h-16 sm:h-20 lg:h-24">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
             className="flex items-center"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
           >
-          <span className={`text-xl sm:text-2xl font-bold ${
-  scrolled 
-    ? 'bg-gradient-to-r from-[#42d392] to-[#647eff] bg-clip-text text-transparent' 
-    : 'text-blue-900 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]'
-}`}>
-  Bellamkonda Rohith
-</span>
+            <span className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-[#E6E6FA]">
+              Bellamkonda Rohith
+            </span>
+            <motion.span
+              className="ml-2 w-2 h-2 bg-[#FF6F61] rounded-full"
+              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <div className="hidden md:flex items-center gap-10 lg:gap-12">
             {links.map((link) => (
-              <motion.button
+              <motion.a
                 key={link.name}
-                onClick={() => handleScroll(link.path)}
-                className={`relative px-3 py-2 text-sm font-medium ${
-                  scrolled ? 'text-gray-600' : 'text-gray-800'
-                } hover:text-blue-600 transition-colors`}
-                whileHover={{ scale: 1.05 }}
+                href={link.path}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScroll(link.path);
+                }}
+                className="relative text-sm lg:text-base font-medium text-[#E6E6FA] hover:text-[#FF6F61] transition-colors duration-300"
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
                 {link.name}
-                {scrolled && (
-                  <motion.div
-                    className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
-              </motion.button>
+                <motion.span
+                  className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#FF6F61] rounded-full"
+                  initial={{ scaleX: 0, originX: 0 }}
+                  whileHover={{ scaleX: 1 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                />
+              </motion.a>
             ))}
           </div>
 
           {/* Mobile Menu Button */}
           <motion.button
-            className="md:hidden p-2 rounded-md text-gray-600 hover:text-blue-600 focus:outline-none"
+            className="md:hidden p-2 rounded-full text-[#E6E6FA] bg-[#FF6F61]/20 hover:bg-[#FF6F61]/40 focus:outline-none focus:ring-2 focus:ring-[#FF6F61] focus:ring-offset-2 focus:ring-offset-[#1A1A2E]"
             onClick={() => setIsOpen(!isOpen)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            aria-label="Toggle menu"
+            aria-label="Toggle navigation menu"
+            aria-expanded={isOpen}
           >
-            {isOpen ? (
-              <XMarkIcon className="h-7 w-7" />
-            ) : (
-              <Bars3Icon className="h-7 w-7" />
-            )}
+            {isOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
           </motion.button>
         </div>
 
@@ -114,30 +128,34 @@ export default function Navbar() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
+              variants={menuVariants}
               initial="closed"
               animate="open"
               exit="closed"
-              variants={menuVariants}
-              className="md:hidden absolute w-full bg-white/95 backdrop-blur-sm"
+              className="md:hidden bg-[#1A1A2E]/98 backdrop-blur-lg border-t border-[#4A4E69]/50"
             >
-              <motion.div className="px-4 pt-2 pb-6 space-y-2">
+              <div className="px-4 py-6 space-y-4">
                 {links.map((link) => (
-                  <motion.button
+                  <motion.a
                     key={link.name}
-                    onClick={() => handleScroll(link.path)}
-                    className="block w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    href={link.path}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScroll(link.path);
+                    }}
+                    className="block px-4 py-3 text-[#E6E6FA] hover:bg-[#4A4E69]/20 rounded-lg text-base font-medium transition-colors duration-300"
                     variants={itemVariants}
-                    whileHover={{ x: 10 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ x: 8, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     {link.name}
-                  </motion.button>
+                  </motion.a>
                 ))}
-              </motion.div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   );
 }

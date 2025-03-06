@@ -12,97 +12,78 @@ import {
 } from '@mui/icons-material';
 
 const skills = [
-  { name: 'HTML5', icon: <HtmlIcon fontSize="inherit" />, color: 'text-orange-500' },
-  { name: 'CSS3', icon: <CssIcon fontSize="inherit" />, color: 'text-blue-500' },
-  { name: 'JavaScript', icon: <JavascriptIcon fontSize="inherit" />, color: 'text-yellow-500' },
-  { name: 'React', icon: <ReactIcon fontSize="inherit" />, color: 'text-cyan-500' },
-  { name: 'Bootstrap', icon: <BootstrapIcon fontSize="inherit" />, color: 'text-purple-500' },
-  { name: 'Tailwind CSS', icon: <TailwindIcon fontSize="inherit" />, color: 'text-cyan-600' },
-  { name: 'Material UI', icon: <MaterialUiIcon fontSize="inherit" />, color: 'text-blue-600' },
-  { name: 'Redux Toolkit', icon: <ReduxIcon fontSize="inherit" />, color: 'text-purple-600' }
+  { name: 'HTML5', icon: <HtmlIcon fontSize="inherit" />, color: '#FF6F61' },
+  { name: 'CSS3', icon: <CssIcon fontSize="inherit" />, color: '#FF6F61' },
+  { name: 'JavaScript', icon: <JavascriptIcon fontSize="inherit" />, color: '#FF6F61' },
+  { name: 'React', icon: <ReactIcon fontSize="inherit" />, color: '#FF6F61' },
+  { name: 'Bootstrap', icon: <BootstrapIcon fontSize="inherit" />, color: '#FF6F61' },
+  { name: 'Tailwind CSS', icon: <TailwindIcon fontSize="inherit" />, color: '#FF6F61' },
+  { name: 'Material UI', icon: <MaterialUiIcon fontSize="inherit" />, color: '#FF6F61' },
+  { name: 'Redux Toolkit', icon: <ReduxIcon fontSize="inherit" />, color: '#FF6F61' }
 ];
 
 const cardVariants = {
-  offscreen: { y: 50, opacity: 0 },
-  onscreen: (i) => ({
-    y: 0,
+  hidden: { opacity: 0, y: 30 },
+  visible: (i) => ({
     opacity: 1,
-    transition: {
-      type: "spring",
-      bounce: 0.4,
-      duration: 0.8,
-      delay: i * 0.1
-    }
+    y: 0,
+    transition: { type: 'spring', stiffness: 120, damping: 15, delay: i * 0.15 }
   })
+};
+
+const textVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 
 const floatVariants = {
   float: {
-    y: [0, -15, 0],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
+    y: [0, -10, 0],
+    transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
   }
 };
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative py-16 md:py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-16 h-16 md:w-24 md:h-24 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full blur-xl opacity-20"
-            initial={{
-              x: Math.random() * 120 - 10 + '%',
-              y: Math.random() * 120 - 10 + '%',
-              scale: 0
-            }}
-            animate={{
-              scale: [0, 1, 0],
-              opacity: [0, 0.1, 0]
-            }}
-            transition={{
-              duration: Math.random() * 8 + 5,
-              repeat: Infinity,
-              ease: 'easeInOut'
-            }}
-          />
-        ))}
-      </div>
+    <section 
+      id="skills" 
+      className="relative py-20 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#E6E6FA] text-[#1A1A2E] overflow-hidden"
+    >
+      {/* Subtle Background Elements */}
+      <motion.div
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+      >
+        <div className="w-full h-full bg-[radial-gradient(circle_at_center,#FF6F61_0%,transparent_70%)]" />
+      </motion.div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
-          initial="offscreen"
-          whileInView="onscreen"
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
           <motion.h2
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#1A1A2E] mb-4"
+            variants={textVariants}
           >
-            Technical Expertise
+            Technical Skills
           </motion.h2>
           <motion.p
-            className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            className="text-lg sm:text-xl lg:text-2xl font-light text-[#4A4E69] max-w-2xl mx-auto"
+            variants={textVariants}
           >
-            Core technologies powering my development process
+            Tools and technologies I wield to build exceptional web experiences.
           </motion.p>
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
-          initial="offscreen"
-          whileInView="onscreen"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8"
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
           {skills.map((skill, index) => (
@@ -110,37 +91,28 @@ export default function Skills() {
               key={skill.name}
               variants={cardVariants}
               custom={index}
-              whileHover={{ y: -10 }}
-              whileTap={{ scale: 0.95 }}
-              className="group relative"
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white p-6 rounded-xl shadow-md border border-[#4A4E69]/20 flex flex-col items-center justify-center group"
             >
-              <div className="p-6 md:p-8 bg-white/90 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-lg transition-all h-full flex flex-col items-center justify-center gap-4 border border-white/50 hover:border-blue-100">
-                <motion.div
-                  variants={floatVariants}
-                  animate="float"
-                  className={`text-5xl md:text-6xl ${skill.color} transition-colors`}
-                >
-                  {skill.icon}
-                </motion.div>
-                <motion.h3
-                  className="text-lg md:text-xl font-semibold text-gray-900 text-center"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {skill.name}
-                </motion.h3>
-              </div>
+              <motion.div
+                variants={floatVariants}
+                animate="float"
+                className="text-4xl sm:text-5xl text-[#FF6F61] mb-4"
+              >
+                {skill.icon}
+              </motion.div>
+              <h3 className="text-base sm:text-lg font-semibold text-[#1A1A2E] text-center">
+                {skill.name}
+              </h3>
+              <motion.div
+                className="absolute inset-0 bg-[#FF6F61]/10 opacity-0 group-hover:opacity-100 rounded-xl"
+                transition={{ duration: 0.3 }}
+              />
             </motion.div>
           ))}
         </motion.div>
       </div>
-
-      {/* Floating animation for entire section */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        initial={{ y: 0 }}
-        animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
     </section>
   );
 }
